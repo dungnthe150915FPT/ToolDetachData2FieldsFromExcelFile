@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\ToolDetachData2FieldsFromExcelFile.props" />
+</Project>

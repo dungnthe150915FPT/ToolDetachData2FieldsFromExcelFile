@@ -1,0 +1,49 @@
+﻿@page
+@model IndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h2>Upload Excel File</h2>
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="UploadedFile" />
+    <input type="email" name="RecipientEmail" placeholder="Nhập gmail nhận thông báo" />
+    <button type="submit">Upload & Process</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.StatusMessage))
+{
+    <div class="notification" id="statusAlert">@Model.StatusMessage</div>
+    <script>
+        setTimeout(() => {
+            const alert = document.getElementById("statusAlert");
+            if (alert) alert.style.display = "none";
+        }, 5000);
+    </script>
+}
+
+@if (Model.DownloadLinks != null && Model.DownloadLinks.Count > 0)
+{
+    <h3>Download Files</h3>
+    <form method="post" asp-page-handler="DownloadAll">
+        <button type="submit">Download All (ZIP)</button>
+    </form>
+    <ul>
+        @foreach (var link in Model.DownloadLinks)
+        {
+            <li><a href="@Url.Content(link)" download>@System.IO.Path.GetFileName(link)</a></li>
+        }
+    </ul>
+}
+
+<style>
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #4CAF50;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+    }
+</style>
